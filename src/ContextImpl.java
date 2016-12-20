@@ -33,10 +33,10 @@ public class ContextImpl implements Context {
             Thread.State state = r.getState();
             if (state.equals(Thread.State.NEW)
                     || state.equals(Thread.State.TERMINATED)
-                    ||state.equals(Thread.State.BLOCKED)
-            ||state.equals(Thread.State.RUNNABLE)
-            ||state.equals(Thread.State.TIMED_WAITING)
-            ||state.equals(Thread.State.WAITING)) {
+                    || state.equals(Thread.State.BLOCKED)
+                    || state.equals(Thread.State.RUNNABLE)
+                    || state.equals(Thread.State.TIMED_WAITING)
+                    || state.equals(Thread.State.WAITING)) {
                 notFailed += 1;
             }
         }
