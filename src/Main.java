@@ -31,13 +31,18 @@ public class Main {
         @Override
         public void run() {
             System.out.println("run3!");
-            throw new NullPointerException();
+            try {
+                this.wait(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     };
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         ExecutionManager exec = new ExecManagerImpl();
         Context c = exec.execute(callback, run1, run2, run3);
-        System.out.println("!" + c.getFailedTaskCount());
+        Thread.sleep(1000);
+        System.out.println("!" + c.getCompletedTaskCount());
     }
 }

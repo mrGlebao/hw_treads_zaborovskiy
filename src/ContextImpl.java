@@ -11,8 +11,8 @@ public class ContextImpl implements Context {
     @Override
     public int getCompletedTaskCount() {
         int completedTasks = 0;
-        for (Thread r : threadPool) {
-            if (r.getState().equals(Thread.State.TERMINATED)) {
+        for (Thread t : threadPool) {
+            if (t.getState().equals(Thread.State.TERMINATED)) {
                 completedTasks += 1;
             }
         }
@@ -22,8 +22,8 @@ public class ContextImpl implements Context {
     @Override
     public int getFailedTaskCount() {
         int notFailed = 0;
-        for (Thread r : threadPool) {
-            Thread.State state = r.getState();
+        for (Thread t : threadPool) {
+            Thread.State state = t.getState();
             if (state.equals(Thread.State.NEW)
                     || state.equals(Thread.State.TERMINATED)
                     || state.equals(Thread.State.BLOCKED)
@@ -39,8 +39,8 @@ public class ContextImpl implements Context {
     @Override
     public int getInterruptedTaskCount() {
         int interruptedTasks = 0;
-        for (Thread r : threadPool) {
-            if (r.isInterrupted()) {
+        for (Thread t : threadPool) {
+            if (t.isInterrupted()) {
                 interruptedTasks += 1;
             }
         }
@@ -49,15 +49,21 @@ public class ContextImpl implements Context {
 
     @Override
     public void interrupt() {
-        for (Thread r : threadPool) {
-            if (r.getState().equals(Thread.State.NEW)) {
-                r.interrupt();
+        for (Thread t : threadPool) {
+            if (t.getState().equals(Thread.State.NEW)) {
+                t.interrupt();
             }
         }
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        int goodThreads = 0;
+        for (Thread t : threadPool) {
+            if (t.isInterrupted() || t.getState().equals(Thread.State.TERMINATED)) {
+                goodThreads+=1;
+            }
+        }
+        return goodThreads == threadPool.length;
     }
 }
