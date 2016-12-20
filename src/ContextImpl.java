@@ -3,16 +3,9 @@
  */
 public class ContextImpl implements Context {
     private Thread[] threadPool;
-    int failedThreads;
-    int completedThreads;
-    int interruptedThreads;
 
-    public ContextImpl(Runnable callback, Runnable... pool) {
-        //this.pool = (Thread[]) Arrays.asList(pool).stream().map(c -> new Thread(c)).collect(Collectors.toList()).toArray();
-        this.threadPool = new Thread[pool.length];
-        for (int i = 0; i < pool.length; i++) {
-            this.threadPool[i] = new Thread(pool[i]);
-        }
+    public ContextImpl(Thread... pool) {
+        this.threadPool = pool;
     }
 
     @Override
