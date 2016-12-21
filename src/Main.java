@@ -43,6 +43,5 @@ public class Main {
         ExecutionManager exec = new ExecManagerImpl();
         Context c = exec.execute(callback, run1, run2, run3);
         Thread.sleep(1000);
-        System.out.println("!" + c.getCompletedTaskCount());
     }
 }

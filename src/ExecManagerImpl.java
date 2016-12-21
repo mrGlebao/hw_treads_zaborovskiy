@@ -4,7 +4,6 @@
 public class ExecManagerImpl implements ExecutionManager {
     private Thread[] threadPool;
     private Runnable callback;
-    private Context context;
     int failedThreads;
 
 
@@ -35,9 +34,14 @@ public class ExecManagerImpl implements ExecutionManager {
             this.threadPool[i] = new Thread(pool[i]);
         }
         this.callback = callback;
-        this.context = new ContextImpl(threadPool);
+        Context context = new ContextImpl(this, threadPool);
         manager.run();
         return context;
+    }
+
+    @Override
+    public int getFailedTasksCount() {
+        return failedThreads;
     }
 
 }

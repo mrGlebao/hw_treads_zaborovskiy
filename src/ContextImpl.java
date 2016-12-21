@@ -3,9 +3,11 @@
  */
 public class ContextImpl implements Context {
     private Thread[] threadPool;
+    ExecutionManager executor;
 
-    public ContextImpl(Thread... pool) {
+    public ContextImpl(ExecutionManager exec, Thread... pool) {
         this.threadPool = pool;
+        this.executor = exec;
     }
 
     @Override
@@ -21,19 +23,7 @@ public class ContextImpl implements Context {
 
     @Override
     public int getFailedTaskCount() {
-        int notFailed = 0;
-        for (Thread t : threadPool) {
-            Thread.State state = t.getState();
-            if (state.equals(Thread.State.NEW)
-                    || state.equals(Thread.State.TERMINATED)
-                    || state.equals(Thread.State.BLOCKED)
-                    || state.equals(Thread.State.RUNNABLE)
-                    || state.equals(Thread.State.TIMED_WAITING)
-                    || state.equals(Thread.State.WAITING)) {
-                notFailed += 1;
-            }
-        }
-        return threadPool.length - notFailed;
+        return executor.getFailedTasksCount();
     }
 
     @Override
